@@ -9,7 +9,7 @@ from app.main import app
 from app.services import conversations as conversations_service
 
 client = TestClient(app)
-URL = f"{settings.api_v1_prefix}/conversations"
+URL = f"{settings.api_prefix}/conversations"
 
 
 def test_create_conversation_with_title() -> None:

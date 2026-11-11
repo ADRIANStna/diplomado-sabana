@@ -3,16 +3,23 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException, status
 
 from app.schemas.conversation import ConversationCreate, ConversationRead
+from app.schemas.health import HealthResponse
 from app.schemas.run import RunCreate, RunRead
 from app.services import conversations as conversations_service
 
 router = APIRouter()
 
 
+@router.get("/health", response_model=HealthResponse, tags=["health"])
+def health_check() -> HealthResponse:
+    return HealthResponse(status="ok")
+
+
 @router.post(
     "/conversations",
     response_model=ConversationRead,
     status_code=status.HTTP_201_CREATED,
+    tags=["conversations"],
 )
 def create_conversation(payload: ConversationCreate) -> ConversationRead:
     return conversations_service.create_conversation(payload)
@@ -22,6 +29,7 @@ def create_conversation(payload: ConversationCreate) -> ConversationRead:
     "/conversations/{conversation_id}/runs",
     response_model=RunRead,
     status_code=status.HTTP_201_CREATED,
+    tags=["runs"],
 )
 def create_run(conversation_id: UUID, payload: RunCreate) -> RunRead:
     try:

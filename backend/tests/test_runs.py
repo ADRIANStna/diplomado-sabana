@@ -7,7 +7,7 @@ from app.core.config import settings
 from app.main import app
 
 client = TestClient(app)
-CONVERSATIONS_URL = f"{settings.api_v1_prefix}/conversations"
+CONVERSATIONS_URL = f"{settings.api_prefix}/conversations"
 
 
 def new_conversation() -> str:
