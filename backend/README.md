@@ -1,6 +1,6 @@
 # Backend
 
-API del proyecto, construida con FastAPI. Usa [uv](https://docs.astral.sh/uv/) para gestionar Python y las dependencias.
+API de Agéntica Aplicada, construida con FastAPI. Usa [uv](https://docs.astral.sh/uv/) para gestionar Python y las dependencias.
 
 ## Instalación
 
