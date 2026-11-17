@@ -4,17 +4,18 @@ Clases 1–6 · Docente: Oscar Rodríguez · Hito I: motor agéntico evaluado (c
 
 El motor se expone al resto del sistema solo a través de `ai.engine.build_engine()` y de los puertos definidos en [`contracts/`](../contracts/). No importa nada de `backend/`, no abre conexiones a la base de datos y no escribe: propone.
 
-## Puesta en marcha
+## Puesta en marcha de la sesión 1
 
-Desde la **raíz** del repositorio (el paquete `ai` se importa desde ahí):
+Desde la raíz del repositorio, usando el entorno documentado en `README.md`:
 
 ```bash
-uv sync --project ai
-uv run --project ai pytest ai/tests
-uv run --project ai python -m ai.run "Revisa SOL-014"
+python -m pip install -r requirements.txt
+python -m ai.chat.agent_chat
+python -m pytest -q tests/test_business_rules.py
 ```
 
-Dependencias nuevas: `uv add --project ai <paquete>` (o `--dev` para herramientas de prueba).
+La rama `feat/agente` contiene únicamente el código de la primera clase. Más
+adelante se incorporarán `ai/engine.py`, RAG, grafos y conectores.
 
 ## Mientras tanto
 
@@ -24,7 +25,7 @@ Hasta que exista `build_engine()`, el backend responde con una simulación en `g
 
 | Clase | Entregable | Estado | Evidencia |
 |---|---|---|---|
-| 1 | `agents/basic_agent.py`, `tools/requests.py`, `contracts/tool_schemas.py` | pendiente | |
+| 1 | chat, `agents/basic_agent.py`, `tools/`, lectura CSV y pruebas | implementado | `tests/test_business_rules.py` |
 | 2 | `rag/` | pendiente | |
 | 3 | `graphs/` | pendiente | |
 | 4 | `mcp_server/` | pendiente | |

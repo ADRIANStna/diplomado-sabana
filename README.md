@@ -11,6 +11,71 @@ El resultado final se despliega en un entorno de **staging**, no de producción.
 
 ---
 
+
+## Sesión 1 — rama `feat/agente`
+
+Código mínimo de la clase 1: chat de terminal, lectura de `data/solicitudes.csv`,
+funciones Python, dos herramientas `@tool`, agente `create_agent` y pruebas.
+Los módulos `backend/`, `frontend/` y los futuros RAG, MCP y A2A permanecen como
+la estructura original del proyecto, **sin implementarse en esta rama**.
+
+> Tu entorno `DiplomadoIA` presenta dependencias incompatibles: `langchain 0.3.27`
+> junto con `langchain-core 1.8.1` y `pydantic 2.14.3` junto con `openrouter 0.11.46`.
+> Para evitar romper el trabajo existente, utiliza Python 3.12 en un entorno nuevo:
+>
+> ```bash
+> conda create -n DiplomadoIAAgente python=3.12 pip -y
+> conda activate DiplomadoIAAgente
+> python -m pip install -r requirements.txt
+> python -m pip check
+> ```
+>
+> Si prefieres continuar en `DiplomadoIA`, primero debes reconciliar sus paquetes
+> antiguos con LangChain 1.x. Instalar únicamente Pydantic no corrige la mezcla.
+
+### Credenciales
+
+El ZIP incluye `secrets/llm.env` **con marcadores, nunca una clave real**:
+
+```dotenv
+OPENROUTER_API_KEY=REEMPLAZAR
+LLM_MODEL=REEMPLAZAR_POR_MODELO_CON_TOOL_CALLING
+```
+
+Completa ese archivo localmente. La carpeta `secrets/` está ignorada por Git. Al
+clonar esta rama desde GitHub, crea la carpeta y el archivo, porque los secretos
+no deben quedar en commits.
+
+### Ejecutar desde la raíz del repositorio
+
+```bash
+python -m ai.chat.first_call            # conexión inicial al LLM
+python -m ai.chat.cli_chat              # chat con historial; salir para terminar
+python -m ai.chat.bind_tools_demo       # inspecciona llamadas solicitadas
+python -m ai.chat.agent_chat            # chat con agente y herramientas
+python -m ai.agents.inspect_tools       # registra llamadas y resultados
+python -m pytest -q tests/test_business_rules.py
+```
+
+Para PyCharm usa **Run configuration → Module name: `ai.chat.agent_chat`** y
+working directory = raíz del repositorio. Evita ejecutar el archivo por ruta,
+porque importa el paquete `ai` desde su raíz.
+
+El chat y el agente requieren un modelo OpenRouter compatible con tool calling.
+Las pruebas de `business_rules.py` no usan internet ni tokens.
+
+### Archivos de la clase
+
+- `ai/config/model.py`: carga `secrets/llm.env` y crea `ChatOpenRouter`.
+- `ai/chat/`: primera llamada, chat, `bind_tools` y chat agéntico.
+- `ai/data/requests.py`: lectura del CSV.
+- `ai/tools/`: funciones, validación Pydantic y dos herramientas LangChain.
+- `ai/agents/`: agente con límite de cuatro herramientas e inspección.
+- `tests/test_business_rules.py`: pruebas deterministas.
+
+---
+
+
 ## Caso de referencia: SOL-014
 
 1. El usuario escribe «Revisa SOL-014».
